@@ -11,4 +11,3 @@ print(get_correct_parentheses(balanced_parentheses_string))  # "()(())()"가 반
 
 print("정답 = (((()))) / 현재 풀이 값 = ", get_correct_parentheses(")()()()("))
 print("정답 = ()()( / 현재 풀이 값 = ", get_correct_parentheses("))()("))
-print("정답 = ((((()())))) / 현재 풀이 값 = ", get_correct_parentheses(')()()()(())('))
