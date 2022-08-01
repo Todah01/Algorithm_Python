@@ -5,7 +5,8 @@ input = "abcabcdede"
 # def compress(text, tok_len):
 #     words = [text[i:i+tok_len] for i in range(0, len(text), tok_len)]
 #     res = []
-#     cur_word = words[0]
+#     cur_word = words[0
+#     ]
 #     cur_cnt = 1
 #     for a, b in zip(words, words[1:] + ['']):
 #         if a == b:
@@ -34,37 +35,38 @@ input = "abcabcdede"
 # for x in a:
 #     print(solution(x))
 
-input = "abcabcdede"
+input = "abcabcabcabcdededededede"
 
 
 def string_compression(string):
-    str_cut_num = 1
-    result = []
+    # 모든 경우의 수를 탐색해야 한다.
+    n = len(string)
+    split_size = 1
+    compress_arr = []
 
-    while str_cut_num <= len(string):
-        str_temp = ""
+    while split_size <= n//2:
+        split_string = [string[i:i + split_size] for i in range(0, n, split_size)]
+
+        temp = ""
         cnt = 1
-        str_to_list = [string[i:i + str_cut_num] for i in range(0, len(string), str_cut_num)]
-        # print(str_to_list)
-        for idx in range(len(str_to_list) - 1):
-            # if str_cut_num == 2:
-            #     print(str_temp)
-            if str_to_list[idx] == str_to_list[idx+1]:
+        for idx in range(len(split_string)-1):
+            if split_string[idx] == split_string[idx+1]:
                 cnt += 1
             else:
                 if cnt > 1:
-                    str_temp += str(cnt)
-                str_temp += str_to_list[idx]
+                    temp += str(cnt)
+                temp += split_string[idx]
                 cnt = 1
 
         if cnt > 1:
-            str_temp += str(cnt)
-        str_temp += str_to_list[-1]
+            temp += str(cnt)
+        temp += split_string[-1]
 
-        result.append(len(str_temp))
-        str_cut_num += 1
+        compress_arr.append(len(temp))
 
-    return min(result)
+        split_size += 1
+
+    return min(compress_arr)
 
 
 print(string_compression(input))  # 14 가 출력되어야 합니다!
