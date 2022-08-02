@@ -19,57 +19,57 @@ dr = [0, 0, -1, 1]
 dc = [1, -1, 0, 0]
 
 
-def get_new_d(d):
-    if d % 2 == 0:
-        return d + 1
+def get_dir(direction):
+    if direction % 2 == 0:
+        return direction + 1
     else:
-        return d - 1
+        return direction - 1
 
 
 def get_game_over_turn_count(horse_count, game_map, horse_location_and_directions):
     n = len(game_map)
-    turn_cnt = 1
-    visited = [[[] for _ in range(n)] for _ in range(n)]
+    horse_map = [[[] for _ in range(n)] for _ in range(n)]
 
-    for i in range(horse_count):
-        r, c, d = horse_location_and_directions[i]
-        visited[r][c].append(i)
+    for horse_idx in range(horse_count):
+        cur_r, cur_c, cur_d = horse_location_and_directions[horse_idx]
+        horse_map[cur_r][cur_c].append(horse_idx)
 
-    while turn_cnt <= 1000:
-        for horse_idx in range(horse_count):
-            r, c, d = horse_location_and_directions[horse_idx]
-            new_r = r + dr[d]
-            new_c = c + dc[d]
+    turn = 1
+
+    while turn <= 1000:
+        for i in range(horse_count):
+            cur_r, cur_c, cur_d = horse_location_and_directions[i]
+            new_r = cur_r + dr[cur_d]
+            new_c = cur_c + dc[cur_d]
 
             if not 0 <= new_r < n or not 0 <= new_c < n or game_map[new_r][new_c] == 2:
-                new_d = get_new_d(d)
+                new_d = get_dir(cur_d)
 
-                horse_location_and_directions[horse_idx][2] = new_d
-                new_r = r + dr[new_d]
-                new_c = c + dc[new_d]
+                horse_location_and_directions[i][2] = new_d
+                new_r = cur_r + dr[new_d]
+                new_c = cur_c + dc[new_d]
 
                 if not 0 <= new_r < n or not 0 <= new_c < n or game_map[new_r][new_c] == 2:
                     continue
 
             moving_arr = []
-            for i in range(len(visited[r][c])):
-                visit_idx = visited[r][c][i]
-                if horse_idx == visit_idx:
-                    moving_arr = visited[r][c][i:]
-                    visited[r][c] = visited[r][c][:i]
+            for idx in range(len(horse_map[cur_r][cur_c])):
+                if i == horse_map[cur_r][cur_c][idx]:
+                    moving_arr = horse_map[cur_r][cur_c][idx:]
+                    horse_map[cur_r][cur_c] = horse_map[cur_r][cur_c][:idx]
                     break
 
             if game_map[new_r][new_c] == 1:
                 moving_arr = reversed(moving_arr)
 
-            for idx in moving_arr:
-                visited[new_r][new_c].append(idx)
-                horse_location_and_directions[idx][0], horse_location_and_directions[idx][1] = new_r, new_c
+            for value in moving_arr:
+                horse_map[new_r][new_c].append(value)
+                horse_location_and_directions[value][0], horse_location_and_directions[value][1] = new_r, new_c
 
-            if len(visited[new_r][new_c]) >= 4:
-                return turn_cnt
+            if len(horse_map[new_r][new_c]) >= 4:
+                return turn
 
-        turn_cnt += 1
+        turn += 1
 
     return -1
 
