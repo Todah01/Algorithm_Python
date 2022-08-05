@@ -1,5 +1,4 @@
-import sys
-from itertools import combinations
+import itertools, sys
 
 n = 5
 m = 3
@@ -14,29 +13,28 @@ city_map = [
 
 
 def get_min_city_chicken_distance(n, m, city_map):
-    customer_loc = []
-    chicken_loc = []
+    consumer, chicken = [], []
 
     for i in range(n):
         for j in range(n):
             if city_map[i][j] == 1:
-                customer_loc.append([i+1, j+1])
+                consumer.append([i, j])
             elif city_map[i][j] == 2:
-                chicken_loc.append([i+1, j+1])
+                chicken.append([i, j])
 
-    chicken_number_of_case = list(combinations(chicken_loc, m))
+    chicken_combination = list(itertools.combinations(chicken, m))
 
-    road_sum_number_of_case = []
-    for case in chicken_number_of_case:
-        road_sum = 0
-        for customer_x, customer_y in customer_loc:
-            chicken_road = sys.maxsize
-            for loc_x, loc_y in case:
-                chicken_road = min(chicken_road, abs(customer_x - loc_x) + abs(customer_y - loc_y))
-            road_sum += chicken_road
-        road_sum_number_of_case.append(road_sum)
+    road_length = sys.maxsize
+    for number in chicken_combination:
+        min_length_to_all = 0
+        for home_r, home_c in consumer:
+            min_length_to_chicken = sys.maxsize
+            for chicken_r, chicken_c in number:
+                min_length_to_chicken = min(min_length_to_chicken, abs(home_r - chicken_r) + abs(home_c - chicken_c))
+            min_length_to_all += min_length_to_chicken
+        road_length = min(road_length, min_length_to_all)
 
-    return min(road_sum_number_of_case)
+    return road_length
 
 
 # 출력
