@@ -21,35 +21,12 @@ def set_chrome_driver():
     return web_driver
 
 
-url = "https://swarfarm.com/bestiary/?page=1&sort=name%3Basc"
+url = "https://nid.naver.com/nidlogin.login?mode=form&url=https%3A%2F%2Fwww.naver.com"
+browser = set_chrome_driver()
+browser.implicitly_wait(10)
+browser.maximize_window()
+browser.get(url)
 
-dr = set_chrome_driver()
-dr.get(url)
-
-act = ActionChains(dr)
-
-columns_selectors = dr.find_elements(By.CLASS_NAME, 'form-check-input checked')
-
-print(columns_selectors)
-
-for selector in columns_selectors:
-    print(selector)
-
-# soup = BeautifulSoup(req.text, 'html.parser')
-# temp = soup.find('table', {'id': 'tblMaster'})
-#
-# table = parser.make2d(temp)
-
-# options = webdriver.ChromeOptions()
-# options.add_experimental_option("excludeSwitches", ["enable-logging"])
-
-# order_number_list = []
-# order_number = 0
-# idx = 0
-#
-# for i in range(4):
-#     while order_number in order_number_list or idx < 100:
-#         order_number = random.randint(0, 4)
-#         idx += 1
-#     order_number_list.append(order_number)
-    # print(order_number)
+login_id = browser.find_element("#id")
+login_id.click()
+login_id.send_keys("wobo5695")
